@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaidehi Parashar | Backend Developer & ML Engineer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0a0a0a;
+    --card: rgba(255,255,255,0.05);
+    --text: #e8e8e8;
+    --text-dim: rgba(255,255,255,0.6);
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border: rgba(255,255,255,0.1);
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0a0a0a;
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Loading Animation */
+.loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Aurora Background */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(59,130,246,0.2), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(139,92,246,0.2), transparent 40%);
+    z-index: -1;
+    animation: aurora 10s infinite alternate;
+}
+
+@keyframes aurora {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-40px); }
+}
+
+/* Cursor Glow */
+.cursor-glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(59,130,246,0.2), transparent 60%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: opacity 0.3s;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    width: 100%;
+    padding: 1rem 2rem;
+    backdrop-filter: blur(20px);
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+nav.scrolled {
+    background: rgba(0,0,0,0.8);
+    padding: 0.75rem 2rem;
+}
+
+.nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--text);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.hero-label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(16px);
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    background: linear-gradient(90deg, var(--accent), var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    animation: fadeInUp 0.8s ease;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s 0.4s ease both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Buttons */
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+}
+
+.btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 4rem 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-label {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Sections */
+section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-description {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+/* About Section */
+.about-content {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.about-content p {
+    margin-bottom: 1rem;
+    color: var(--text-dim);
+}
+
+/* Experience Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--purple));
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.6s ease;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 20px var(--accent);
+}
+
+.timeline-content {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateX(10px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+}
+
+.timeline-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-company {
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-date {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 1rem;
+}
+
+.timeline-description {
+    color: var(--text-dim);
+}
+
+.timeline-description ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.timeline-description li {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.timeline-description li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+/* Projects Grid */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+    border-color: var(--accent);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.project-icon {
+    font-size: 2.5rem;
+}
+
+.project-links {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.project-link {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.project-link:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.project-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.project-description {
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    flex-grow: 1;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.tag:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    transform: scale(1.05);
+}
+
+/* Education */
+.education-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.education-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.education-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.education-school {
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.education-date {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.coursework {
+    margin-top: 1rem;
+}
+
+.coursework-label {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.coursework-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Achievements */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.achievement-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.achievement-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.achievement-card:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+}
+
+.achievement-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.achievement-description {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+}
+
+/* Contact */
+.contact-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Footer */
+footer {
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.footer-content {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem;
+        border-bottom: 1px solid var(--border);
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+
+    .stats {
+        gap: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .timeline {
+        padding-left: 1rem;
+    }
+
+    .timeline-item {
+        padding-left: 1.5rem;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .cursor-glow {
+        display: none;
+    }
+}
+
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Loading Animation -->
+<div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+</div>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow"></div>
+
+<!-- Navbar -->
+<nav id="nav">
+    <div class="nav-logo">&lt;VP /&gt;</div>
+    <button class="mobile-toggle" id="mobileToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-label">👋 Open to Opportunities</div>
+        <h1>Vaidehi Parashar</h1>
+        <p class="hero-subtitle">
+            Backend Developer & ML Engineer passionate about building scalable systems and intelligent solutions. 
+            Specializing in Spring Boot, FastAPI, and Machine Learning at KIIT University.
+        </p>
+        <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary">Get In Touch</a>
+            <a href="https://github.com/vaidehiparashar" target="_blank" class="btn">View GitHub</a>
+            <a href="mailto:parasharvaidehi2@gmail.com?subject=Resume Request" class="btn">Download Resume</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<div class="stats">
+    <div class="stat-item">
+        <div class="stat-number" data-target="1489">0</div>
+        <div class="stat-label">LeetCode Rating</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number" data-target="150">0</div>
+        <div class="stat-label">Problems Solved</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number" data-target="6">0</div>
+        <div class="stat-label">Major Projects</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number" data-target="5">0</div>
+        <div class="stat-label">Certifications</div>
+    </div>
+</div>
+
+<!-- About Section -->
+<section id="about" class="reveal">
+    <div class="section-header">
+        <div class="section-label">01 — About Me</div>
+        <h2 class="section-title">Who I Am</h2>
+    </div>
+    <div class="about-content">
+        <p>
+            I'm a Computer Science Engineering student at KIIT University with a strong foundation in backend development 
+            and machine learning. My journey in tech has been driven by a passion for creating efficient, scalable solutions 
+            that solve real-world problems.
+        </p>
+        <p>
+            Currently, I'm contributing to research at MDPI Sensors and developing encryption algorithms at KINETEX Tech Society. 
+            I specialize in building robust backend systems using Spring Boot and FastAPI, implementing ML models, and architecting 
+            RESTful APIs that power modern applications.
+        </p>
+        <p>
+            When I'm not coding, you'll find me solving algorithmic challenges on LeetCode (Top 47% globally) or exploring 
+            the latest developments in AI and cloud technologies.
+        </p>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="reveal">
+    <div class="section-header">
+        <div class="section-label">02 — Experience</div>
+        <h2 class="section-title">Where I've Contributed</h2>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3 class="timeline-title">Research Contributor</h3>
+                <div class="timeline-company">MDPI Sensors Collaboration</div>
+                <div class="timeline-date">May 2025 – Present</div>
+                <div class="timeline-description">
+                    <ul>
+                        <li>Co-authored peer-reviewed research paper contributing to data analysis, experimentation, and technical documentation</li>
+                        <li>Prepared technical presentations and supported research communication across academic platforms</li>
+                        <li>Collaborated with international research team on sensor technology applications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3 class="timeline-title">Research & Development Member</h3>
+                <div class="timeline-company">KINETEX Tech Society, KIIT</div>
+                <div class="timeline-date">Aug 2025 – Present</div>
+                <div class="timeline-description">
+                    <ul>
+                        <li>Developed encryption/decryption modules using matrix-based algorithms for secure data transmission</li>
+                        <li>Optimized code performance by 30% through systematic debugging, testing, and analysis in Agile environment</li>
+                        <li>Participated in sprint planning and delivered features within tight deadlines</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="reveal">
+    <div class="section-header">
+        <div class="section-label">03 — Projects</div>
+        <h2 class="section-title">What I've Built</h2>
+        <p class="section-description">
+            A collection of projects showcasing my expertise in full-stack development, backend systems, and machine learning
+        </p>
+    </div>
+    <div class="projects-grid">
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">🚀</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/fullstack-django-react-app" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">Full Stack Web Application</h3>
+            <p class="project-description">
+                Built scalable full-stack application using Django REST Framework and React with modular architecture, 
+                Redux state management, and efficient RESTful API communication.
+            </p>
+            <div class="project-tags">
+                <span class="tag">Django</span>
+                <span class="tag">React</span>
+                <span class="tag">Redux</span>
+                <span class="tag">REST APIs</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">🤖</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/ai-code-reviewer" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">AI Code Reviewer</h3>
+            <p class="project-description">
+                Developed backend service for automated code review using LLM integration with 3 REST endpoints 
+                and async processing achieving sub-2s response time with layered architecture.
+            </p>
+            <div class="project-tags">
+                <span class="tag">FastAPI</span>
+                <span class="tag">Spring Boot</span>
+                <span class="tag">LLM APIs</span>
+                <span class="tag">Async</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">🔄</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/ai-code-translator" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">AI Code Translator</h3>
+            <p class="project-description">
+                Built backend system for cross-language code translation with 40% improved concurrency efficiency 
+                using asynchronous requests and scalable validation pipelines.
+            </p>
+            <div class="project-tags">
+                <span class="tag">FastAPI</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Async Processing</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">💊</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/Medical-Cost-Predictor-MLR" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">Medical Cost Predictor</h3>
+            <p class="project-description">
+                Developed ML regression model achieving R² ≈ 0.85 with feature engineering and evaluation of 
+                Linear, Ridge, and Lasso models using RMSE and R² metrics for optimization.
+            </p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Scikit-learn</span>
+                <span class="tag">Pandas</span>
+                <span class="tag">ML</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">📈</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/equity_dss" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">Stock Analysis Platform</h3>
+            <p class="project-description">
+                AI-powered stock analysis and prediction pipeline using Streamlit with advanced data visualization 
+                and forecasting capabilities for equity decision support systems.
+            </p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Streamlit</span>
+                <span class="tag">PHP</span>
+                <span class="tag">JavaScript</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">📊</div>
+                <div class="project-links">
+                    <a href="https://github.com/vaidehiparashar/bse-funds" target="_blank" class="project-link" title="View on GitHub">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <h3 class="project-title">BSE Funds Analysis</h3>
+            <p class="project-description">
+                Data analysis and visualization tool for BSE mutual funds with comprehensive Jupyter notebooks 
+                for financial data processing and insights generation.
+            </p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Jupyter</span>
+                <span class="tag">Data Analysis</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Education Section -->
+<section id="education" class="reveal">
+    <div class="section-header">
+        <div class="section-label">04 — Education</div>
+        <h2 class="section-title">Academic Background</h2>
+    </div>
+    <div class="education-card">
+        <div class="education-header">
+            <div>
+                <h3 class="education-title">B.Tech in Computer Science Engineering</h3>
+                <div class="education-school">Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</div>
+            </div>
+            <div class="education-date">2023 – 2027</div>
+        </div>
+        <div class="coursework">
+            <span class="coursework-label">Relevant Coursework:</span>
+            <div class="coursework-list">
+                <span class="tag">Data Structures & Algorithms</span>
+                <span class="tag">OOP</span>
+                <span class="tag">DBMS</span>
+                <span class="tag">Operating Systems</span>
+                <span class="tag">Computer Networks</span>
+                <span class="tag">Machine Learning</span>
+                <span class="tag">Cloud Computing</span>
+                <span class="tag">Software Engineering</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements Section -->
+<section id="achievements" class="reveal">
+    <div class="section-header">
+        <div class="section-label">05 — Achievements</div>
+        <h2 class="section-title">Milestones & Certifications</h2>
+    </div>
+    <div class="achievements-grid">
+        <div class="achievement-card">
+            <h3 class="achievement-title">
+                <span>🏆</span>
+                <span>LeetCode Rating: 1489</span>
+            </h3>
+            <p class="achievement-description">Top 47% globally | 150+ DSA problems solved across all difficulty levels</p>
+        </div>
+
+        <div class="achievement-card">
+            <h3 class="achievement-title">
+                <span>☕</span>
+                <span>HackerRank Java Certification</span>
+            </h3>
+            <p class="achievement-description">Certified in Object-Oriented Programming concepts and advanced Java features</p>
+        </div>
+
+        <div class="achievement-card">
+            <h3 class="achievement-title">
+                <span>🗄️</span>
+                <span>HackerRank SQL Certification</span>
+            </h3>
+            <p class="achievement-description">Mastery in Advanced Queries, Joins, Aggregations, and Database Design</p>
+        </div>
+
+        <div class="achievement-card">
+            <h3 class="achievement-title">
+                <span>🐍</span>
+                <span>HackerRank Python Certification</span>
+            </h3>
+            <p class="achievement-description">Expertise in Data Structures, Algorithms, and Problem Solving with Python</p>
+        </div>
+
+        <div class="achievement-card">
+            <h3 class="achievement-title">
+                <span>🔌</span>
+                <span>APIs & Software Project Management</span>
+            </h3>
+            <p class="achievement-description">Comprehensive training in REST API Design and Software Development Lifecycle</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="reveal">
+    <div class="section-header">
+        <div class="section-label">06 — Contact</div>
+        <h2 class="section-title">Let's Connect</h2>
+    </div>
+    <div class="contact-content">
+        <p class="section-description">
+            I'm always open to discussing new opportunities, collaborations, or just having a chat 
+            about technology and software development. Feel free to reach out!
+        </p>
+        <div class="contact-links">
+            <a href="mailto:parasharvaidehi2@gmail.com" class="contact-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                Email
+            </a>
+            <a href="https://github.com/vaidehiparashar" target="_blank" class="contact-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+            <a href="https://linkedin.com/in/vaidehi-parashar" target="_blank" class="contact-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                LinkedIn
+            </a>
+            <a href="https://leetcode.com/u/parasharvaidehi2/" target="_blank" class="contact-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+                LeetCode
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-content">
+        <p>Designed & Built by Vaidehi Parashar</p>
+        <p style="margin-top: 0.5rem;">© 2026 | Made with ❤️ and ☕</p>
+    </div>
+</footer>
+
+<script>
+// Loading Animation
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+    }, 1000);
+});
+
+// Cursor Glow
+const glow = document.querySelector('.cursor-glow');
+let mouseX = 0, mouseY = 0;
+let glowX = 0, glowY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateGlow() {
+    glowX += (mouseX - glowX) * 0.1;
+    glowY += (mouseY - glowY) * 0.1;
+    glow.style.left = glowX + 'px';
+    glow.style.top = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+}
+animateGlow();
+
+// Navbar Scroll Effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
+
+// Mobile Menu Toggle
+const mobileToggle = document.getElementById('mobileToggle');
+const navLinks = document.getElementById('navLinks');
+
+mobileToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    mobileToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        mobileToggle.textContent = '☰';
+    });
+});
+
+// Smooth Scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Stats Counter Animation
+function animateStats() {
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+        const target = parseInt(stat.getAttribute('data-target'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                stat.textContent = Math.floor(current);
+                requestAnimationFrame(updateCounter);
+            } else {
+                stat.textContent = target;
+            }
+        };
+        updateCounter();
+    });
+}
+
+// Scroll Reveal Animation
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Trigger stats animation when stats section is visible
+            if (entry.target.querySelector('.stat-number')) {
+                animateStats();
+            }
+        }
+    });
+}, observerOptions);
+
+// Observe all animated elements
+document.querySelectorAll('.reveal, .project-card, .timeline-item, .achievement-card').forEach(el => {
+    observer.observe(el);
+});
+
+// Magnetic Buttons Effect
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width/2;
+        const y = e.clientY - rect.top - rect.height/2;
+        btn.style.transform = `translate(${x*0.15}px, ${y*0.15}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0, 0)';
+    });
+});
+</script>
+
+</body>
+</html>
